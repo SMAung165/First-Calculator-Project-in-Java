@@ -1,10 +1,11 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner userInput = new Scanner(System.in);
         while (true) {
-            System.out.println("Select calculator-type 1 -> (Normal), 2 -> (Scientific), s -> (calculator selection) q -> (Quit)");
+            System.out.println("Select Calculator Type (1) -> (Normal), (2) -> (Scientific), (s) -> (calculator selection), (h) - > history, (q) -> (Quit)");
             String calculatorType = userInput.nextLine();
             switch (calculatorType) {
                 case "1" -> {
@@ -28,84 +29,97 @@ public class Main {
     //core methods
     public static void startCalculator(Calculator calculator, Scanner userInput) {
         while (true) {
-            String num1 = getUserInput("Enter 1st Number", calculator, userInput);
-            if (num1.equals("s")) return;
 
-            String num2 = getUserInput("Enter 2nd Number", calculator, userInput);
-            if (num2.equals("s")) return;
+            String[] userExpressionInput = inputProcessor("Enter expression: ", calculator, userInput);
+            if (userExpressionInput[0].equals("s")) return;
 
-
-            calculator.setNum(Double.parseDouble(num1), Double.parseDouble(num2));
-
-            if (calculator instanceof ScientificCalculator) {
-                System.out.println("Which operation would you like to perform?: 1 -> (+), 2 -> (-), 3 -> (/), 4 -> (*), 5 -> (Power), 6 -> (Square Root), h -> (See History), s -> (switch calculator), q -> (Quit)");
-            } else {
-                System.out.println("Which operation would you like to perform?: 1 -> (+), 2 -> (-), 3 -> (/), 4 -> (*), h -> (See History), s -> (switch calculator), q -> (Quit)");
-            }
-
-            String operation = userInput.nextLine();
+            calculator.setNum(Double.parseDouble(userExpressionInput[0]), Double.parseDouble(userExpressionInput[2]));
+            String operation = userExpressionInput[1];
             switch (operation) {
-                case "1" -> {
+                case "+" -> {
                     calculator.add();
                     calculator.showLastResult();
                 }
-                case "2" -> {
+                case "-" -> {
                     calculator.subtract();
                     calculator.showLastResult();
                 }
-                case "3" -> {
+                case "/" -> {
                     calculator.divide();
                     calculator.showLastResult();
                 }
-                case "4" -> {
+                case "*" -> {
                     calculator.multiply();
                     calculator.showLastResult();
                 }
-                case "5" -> {
+                case "^" -> {
                     if (calculator instanceof ScientificCalculator sc) {
                         sc.power();
                         sc.showLastResult();
-                    } else {
-                        invalidOperation();
                     }
                 }
-                case "6" -> {
+                case "sqrt" -> {
                     if (calculator instanceof ScientificCalculator sc) {
                         sc.squareRoot();
                         sc.showLastResult();
-                    } else {
-                        invalidOperation();
                     }
                 }
-                case "h" -> calculator.showHistory();
-                case "s" -> {
-                    return;
-                }
-                case "q" -> programEnd();
-                default -> invalidOperation();
+                default -> invalidOperator();
             }
         } //while loop
     }
 
-    public static String getUserInput(String prompt, Calculator calculator, Scanner userInput) {
-        String input = "";
-        while (!isNumeric(input)) {
-            System.out.println(prompt);
-            input = userInput.nextLine();
-            switch (input) {
-                case "q" -> programEnd();
-                case "h" -> calculator.showHistory();
-                case "s" -> {
-                    return "s";
+    public static String[] inputProcessor(String prompt, Calculator calculator, Scanner userInput) {
+        while (true) {
+            System.out.print(prompt);
+            String[] parts = inputParser(userInput.nextLine());
+            if (parts.length != 3) {
+                switch (parts[0]) {
+                    case "q" -> programEnd();
+                    case "h" -> calculator.showHistory();
+                    case "s" -> {
+                        return new String[]{"s"};
+                    }
+                    default -> invalidInput();
+
                 }
+            } else if (isNumeric(parts[0]) && isNumeric(parts[2])) {
+                String[] operators;
+                if (calculator instanceof ScientificCalculator) {
+                    operators = new String[]{"+", "-", "*", "/", "^", "sqrt"};
+                } else {
+                    operators = new String[]{"+", "-", "*", "/"};
+                }
+                if (Arrays.asList(operators).contains(parts[1])) {
+                    return parts;
+                } else {
+                    invalidOperator();
+                }
+            } else {
+                invalidInput();
             }
         }
-        return input;
+    }
+
+    public static String[] inputParser(String input) {
+        input = input.replace("+", " + ")
+                .replace("-", " - ")
+                .replace("*", " * ")
+                .replace("/", " / ")
+                .replace("^", " ^ ")
+//                .replace("sqrt", " sqrt 0") to be continued
+                .replaceAll("\\s+", " ")
+                .trim();
+        return input.split(" ");
     }
 
     //error handling methods
-    public static void invalidOperation() {
-        System.out.println("Invalid operation. Please try again.");
+    public static void invalidInput() {
+        System.out.println("Invalid input. Please try again.");
+    }
+
+    public static void invalidOperator() {
+        System.out.println("Invalid operator. Please try again.");
     }
 
     public static void invalidSelection() {
@@ -117,6 +131,7 @@ public class Main {
         System.out.println("See ya!");
         System.exit(0);
     }
+
     public static boolean isNumeric(String input) {
         try {
             Double.parseDouble(input);
@@ -125,6 +140,4 @@ public class Main {
             return false;
         }
     }
-
-
 }

@@ -28,7 +28,7 @@ public class History {
             return;
         }
 
-        System.out.printf("Last Result on %s = %s\n", calculatorType, lastEntryOfHistory);
+        System.out.printf("Result = %s\n", lastEntryOfHistory);
 
     }
 }
