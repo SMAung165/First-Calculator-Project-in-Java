@@ -2,7 +2,7 @@ public class Calculator {
     private double num1;
     private double num2;
     private String calculatorType;
-    private History history;
+    private final History history;
 
     //constructors
     public Calculator() {
