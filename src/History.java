@@ -1,34 +1,52 @@
+import java.util.ArrayList;
+
 public class History {
-    private String historyLog = "";
-    private String lastEntryOfHistory ="";
+    private ArrayList<String> historyLog = new ArrayList<>();
+    private String lastEntryOfHistory = "";
 
     //constructors
-    public History() {
-    }
+    public History() {}
 
     //methods
     public void storeHistory(String operation, double result) {
         String historyString = String.format("%s %.2f", operation, result);
-
-        this.historyLog += historyString + "\n";
-        this.lastEntryOfHistory = historyString;
+        historyLog.add(historyString);
+        lastEntryOfHistory = historyLog.get(historyLog.size() - 1);
     }
 
     public void showHistory(String calculatorType) {
-        if(historyLog.isEmpty()){
+        if (historyLog.isEmpty()) {
             System.out.println("History is empty");
-            return;
+        } else {
+
+            String outputText = String.format("History of %s:\n", calculatorType);
+            System.out.print(outputText);
+
+            barsSeparators(outputText.length());//line separators
+
+            for (String entry : historyLog) {
+                System.out.println(entry);
+            }
+
+            barsSeparators(outputText.length());//line separators
         }
-        System.out.printf("History of %s:\n%s", calculatorType, this.historyLog);
     }
 
-    public void showLastResult(String calculatorType) {
+    public void showResult() {
         if (lastEntryOfHistory.isEmpty()) {
-            System.out.printf("No operations are yet to be performed on %s.\n", calculatorType);
+            System.out.println("No operations performed yet!");
             return;
         }
-
-        System.out.printf("Result = %s\n", lastEntryOfHistory);
-
+        System.out.printf("%s\n", lastEntryOfHistory);
     }
+
+    //utility methods
+    private void barsSeparators(int lengthOfText) {
+        for (int i = 0; i < lengthOfText; i++) {
+            System.out.print("-");
+        }
+        System.out.println();
+    }
+
+
 }

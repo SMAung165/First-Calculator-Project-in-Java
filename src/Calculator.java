@@ -21,7 +21,7 @@ public class Calculator {
 
     //setters
     protected void setCalculatorType(String type) {
-        this.calculatorType = type;
+        calculatorType = type;
     }
 
     public void setNum(double num1, double num2) {
@@ -30,7 +30,7 @@ public class Calculator {
     }
 
     protected void setResultAndOperation(double result, String operation) {
-        this.history.storeHistory(operation, result);
+        history.storeHistory(operation, result);
     }
 
     //methods
@@ -46,20 +46,22 @@ public class Calculator {
         setResultAndOperation(num1 * num2, String.format("%.2f * %.2f =", num1, num2));
     }
 
-    public void divide() {
+    public boolean divide() {
         if (num2 == 0) {
             System.out.println("Cannot divide by zero!");
-            return;
+            return false;
         }
         setResultAndOperation(num1 / num2, String.format("%.2f / %.2f =", num1, num2));
+        return true;
+
     }
 
     public void showHistory() {
-        this.history.showHistory(this.calculatorType);
+        history.showHistory(calculatorType);
     }
 
-    public void showLastResult() {
-        this.history.showLastResult(calculatorType);
+    public void showResult() {
+        history.showResult();
     }
 }
 
