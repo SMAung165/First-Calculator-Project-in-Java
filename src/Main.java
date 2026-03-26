@@ -28,9 +28,9 @@ public class Main {
     }
 
     //core methods
-    public static void startCalculator(Calculator calculator, Scanner userInput) {
+    private static void startCalculator(Calculator calculator, Scanner userInput) {
         while (true) {
-            String[] userExpressionInput = inputProcessor("Enter expression: ", calculator, userInput);
+            String[] userExpressionInput = inputProcessor(calculator, userInput);
             if (userExpressionInput[0].equals("s")) return;
 
             calculator.setNum(Double.parseDouble(userExpressionInput[0]), Double.parseDouble(userExpressionInput[2]));
@@ -54,12 +54,12 @@ public class Main {
         } //while loop
     }
 
-    public static String[] inputProcessor(String prompt, Calculator calculator, Scanner userInput) {
+    private static String[] inputProcessor(Calculator calculator, Scanner userInput) {
         ArrayList<String> operators = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
         if (calculator instanceof ScientificCalculator) operators.addAll(Arrays.asList("^", "sqrt"));
 
         while (true) {
-            System.out.print(prompt);
+            System.out.print("Enter expression: ");
             String[] parts = inputParser(userInput.nextLine());
             if (parts.length != 3) {
                 switch (parts[0]) {
@@ -96,7 +96,7 @@ public class Main {
         }
     }
 
-    public static String[] inputParser(String input) {
+    private static String[] inputParser(String input) {
         input = input.replace("+", " + ")
                 .replace("-", " - ")
                 .replace("*", " * ")
@@ -107,27 +107,24 @@ public class Main {
                 .trim();
         return input.split(" ");
     }
-
     //error handling methods
-    public static void invalidInput() {
+    private static void invalidInput() {
         System.out.println("Invalid input. Please try again.");
     }
 
-    public static void invalidOperator() {
+    private static void invalidOperator() {
         System.out.println("Invalid operator. Please try again.");
     }
 
-    public static void invalidSelection() {
+    private static void invalidSelection() {
         System.out.println("Invalid selection. Please try again.");
     }
-
     //utility methods
-    public static void programEnd() {
+    private static void programEnd() {
         System.out.println("See ya!");
         System.exit(0);
     }
-
-    public static boolean isNumeric(String input) {
+    private static boolean isNumeric(String input) {
         try {
             Double.parseDouble(input);
             return true;

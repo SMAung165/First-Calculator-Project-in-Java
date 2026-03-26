@@ -29,21 +29,21 @@ public class Calculator {
         this.num2 = num2;
     }
 
-    protected void setResultAndOperation(double result, String operation) {
+    protected void recordOperation(double result, String operation) {
         history.storeHistory(operation, result);
     }
 
     //methods
     public void add() {
-        setResultAndOperation(num1 + num2, String.format("%.2f + %.2f =", num1, num2));
+        recordOperation(num1 + num2, String.format("%.2f + %.2f =", num1, num2));
     }
 
     public void subtract() {
-        setResultAndOperation(num1 - num2, String.format("%.2f - %.2f =", num1, num2));
+        recordOperation(num1 - num2, String.format("%.2f - %.2f =", num1, num2));
     }
 
     public void multiply() {
-        setResultAndOperation(num1 * num2, String.format("%.2f * %.2f =", num1, num2));
+        recordOperation(num1 * num2, String.format("%.2f * %.2f =", num1, num2));
     }
 
     public boolean divide() {
@@ -51,7 +51,7 @@ public class Calculator {
             System.out.println("Cannot divide by zero!");
             return false;
         }
-        setResultAndOperation(num1 / num2, String.format("%.2f / %.2f =", num1, num2));
+        recordOperation(num1 / num2, String.format("%.2f / %.2f =", num1, num2));
         return true;
 
     }
