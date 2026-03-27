@@ -1,4 +1,5 @@
-public class ScientificCalculator extends Calculator {
+import contracts.ScientificCalculations;
+public class ScientificCalculator extends Calculator implements ScientificCalculations {
 
     //constructors
     public ScientificCalculator() {
@@ -14,5 +15,4 @@ public class ScientificCalculator extends Calculator {
         // num2 holds the target number passed from inputProcessor
         recordOperation(Math.sqrt(getNum2()), String.format("sqrt%.2f =", getNum2()));
     }
-
 }

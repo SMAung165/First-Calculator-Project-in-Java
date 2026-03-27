@@ -1,3 +1,4 @@
+import contracts.ScientificCalculations;
 import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,6 @@ public class Main {
                 }
                 default -> invalidSelection();
             }
-
         }
     }
 
@@ -42,10 +42,10 @@ public class Main {
                 case "/" -> isOperationSuccess = calculator.divide();
                 case "*" -> calculator.multiply();
                 case "^" -> {
-                    if (calculator instanceof ScientificCalculator sc) sc.power();
+                    if (calculator instanceof ScientificCalculations sc) sc.power();
                 }
                 case "sqrt" -> {
-                    if (calculator instanceof ScientificCalculator sc) sc.squareRoot();
+                    if (calculator instanceof ScientificCalculations sc) sc.squareRoot();
                 }
                 default -> {
                 }//never reach
@@ -56,7 +56,7 @@ public class Main {
 
     private static String[] inputProcessor(Calculator calculator, Scanner userInput) {
         ArrayList<String> operators = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
-        if (calculator instanceof ScientificCalculator) operators.addAll(Arrays.asList("^", "sqrt"));
+        if (calculator instanceof ScientificCalculations) operators.addAll(Arrays.asList("^", "sqrt"));
 
         while (true) {
             System.out.print("Enter expression: ");
@@ -68,7 +68,7 @@ public class Main {
                     case "sqrt" -> {
                         if (parts.length < 2 || !isNumeric(parts[1])) {
                             invalidInput();
-                        } else if (!(calculator instanceof ScientificCalculator)) {
+                        } else if (!(calculator instanceof ScientificCalculations)) {
                            invalidOperator();
                         } else {
                             return new String[]{"0", parts[0], parts[1]};
